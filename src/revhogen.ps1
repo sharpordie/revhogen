@@ -41,6 +41,9 @@ function Update-NvidiaGeforceExperience {
     $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "*GeForce*.lnk")
     if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
     # https://github.com/Moyster/BaiGfe/issues/26
+    $deposit = "C:\Program Files\NVIDIA Corporation\NVIDIA GeForce Experience\www\"
+    $archive = "https://github.com/Moyster/BaiGfe/files/8431929/app.zip"
+    Rename-Item -Path "$deposit/app.js" -NewName "$deposit/_app.js"
 }
 
 function Update-Qbittorrent {
@@ -51,7 +54,7 @@ function Update-Qbittorrent {
     $pattern = "Latest:\s+v([\d.]+)"
     $content = (New-Object Net.WebClient).DownloadString("$website")
     $version = [Regex]::Matches("$content", "$pattern").Groups[1].Value
-    $current = Get-FileVersion -Target "$starter"
+    $current = try { (Get-Command "$starter" -ErrorAction SilentlyContinue).Version.ToString() } catch { '0.0.0.0' }
     $updated = [Version] "$current" -ge [Version] "$version"
     if (-not $updated) {
         $address = "https://downloads.sourceforge.net/project/qbittorrent/qbittorrent-win32"
@@ -93,8 +96,8 @@ if ($MyInvocation.InvocationName -ne ".") {
     $heading = "`n{0,$maximum}{1,-3}{2,-6}{3,-3}{4,-8}" -f "FUNCTION", "", "STATUS", "", "DURATION"
     $factors = (
         "Update-System",
-        "Update-NvidiaGameReadyDriver",
-        "Update-NvidiaGeforceExperience",
+        # "Update-NvidiaGameReadyDriver",
+        # "Update-NvidiaGeforceExperience",
         "Update-Qbittorrent"
     )
     Write-Host "$heading"
