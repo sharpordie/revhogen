@@ -41,9 +41,9 @@ function Update-NvidiaGeforceExperience {
     $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "*GeForce*.lnk")
     if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
     # https://github.com/Moyster/BaiGfe/issues/26
-    $deposit = "C:\Program Files\NVIDIA Corporation\NVIDIA GeForce Experience\www\"
-    $archive = "https://github.com/Moyster/BaiGfe/files/8431929/app.zip"
-    Rename-Item -Path "$deposit/app.js" -NewName "$deposit/_app.js"
+    # $deposit = "C:\Program Files\NVIDIA Corporation\NVIDIA GeForce Experience\www\"
+    # $archive = "https://github.com/Moyster/BaiGfe/files/8431929/app.zip"
+    # Rename-Item -Path "$deposit/app.js" -NewName "$deposit/_app.js"
 }
 
 function Update-Qbittorrent {
@@ -85,14 +85,14 @@ function Update-System {
 if ($MyInvocation.InvocationName -ne ".") {
     $Host.UI.RawUI.WindowTitle = (Get-Item -Path "$($script:MyInvocation.MyCommand.Path)").BaseName
     Update-Accessibility ; $ProgressPreference = "SilentlyContinue" ; Clear-Host
-    Write-Host "+--------------------------------------------------------------------+"
-    Write-Host "|                                                                    |"
-    Write-Host "|  > REVHOGEN                                                        |"
-    Write-Host "|                                                                    |"
-    Write-Host "|  > REVIOS POST INSTALLATION SCRIPT                                 |"
-    Write-Host "|                                                                    |"
-    Write-Host "+--------------------------------------------------------------------+"
-    $maximum = (70 - 20) * -1
+    Write-Host "+-----------------------------------------------------------------------------------+"
+    Write-Host "|                                                                                   |"
+    Write-Host "|  > REVHOGEN                                                                       |"
+    Write-Host "|                                                                                   |"
+    Write-Host "|  > REVIOS POST INSTALLATION SCRIPT                                                |"
+    Write-Host "|                                                                                   |"
+    Write-Host "+-----------------------------------------------------------------------------------+"
+    $maximum = (85 - 20) * -1
     $heading = "`n{0,$maximum}{1,-3}{2,-6}{3,-3}{4,-8}" -f "FUNCTION", "", "STATUS", "", "DURATION"
     $factors = (
         "Update-System",
