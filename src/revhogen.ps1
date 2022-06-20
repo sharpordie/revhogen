@@ -46,6 +46,27 @@ function Update-NvidiaGeforceExperience {
     # Rename-Item -Path "$deposit/app.js" -NewName "$deposit/_app.js"
 }
 
+function Update-Playnite {
+    $starter = "${env:LOCALAPPDATA}\insomnia\Insomnia.exe"
+    $website = "https://api.github.com/repos/JosefNemec/Playnite/releases/latest"
+    $version = ((Invoke-WebRequest -Uri "$website" -UseBasicParsing | ConvertFrom-Json)[0].tag_name)
+    $compact = ((Invoke-WebRequest -Uri "$website" -UseBasicParsing | ConvertFrom-Json)[0].tag_name).Replace(".", "")
+    $current = try { (Get-Command "$starter" -EA SilentlyContinue).Version.ToString() } catch { "0.0" }
+    $present = [Version] "$current" -ne [Version] "0.0"
+    $updated = [Version] "$current" -ge [Version] "$version"
+    if (-not $updated) {
+        $address = "https://github.com/JosefNemec/Playnite/releases/download/${version}/Playnite${compact}.exe"
+        $program = Join-Path -Path "$env:TEMP" -ChildPath "$(Split-Path "$address" -Leaf)"
+        $adjunct = "/SP- /VERYSILENT /NORESTART"
+        (New-Object Net.WebClient).DownloadFile("$address", "$program")
+        Start-Process -FilePath "$program" -ArgumentList "$adjunct" -Verb RunAs -Wait
+        # $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("CommonDesktopDirectory"), "*Playnite*.lnk")
+        # if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
+        # $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "*Playnite*.lnk")
+        # if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
+    }
+}
+
 function Update-Qbittorrent {
     $deposit = "${env:USERPROFILE}\Downloads\P2P"
     $loading = "${env:USERPROFILE}\Downloads\P2P\Incompleted"
@@ -54,7 +75,7 @@ function Update-Qbittorrent {
     $pattern = "Latest:\s+v([\d.]+)"
     $content = (New-Object Net.WebClient).DownloadString("$website")
     $version = [Regex]::Matches("$content", "$pattern").Groups[1].Value
-    $current = try { (Get-Command "$starter" -ErrorAction SilentlyContinue).Version.ToString() } catch { '0.0.0.0' }
+    $current = try { (Get-Command "$starter" -EA SilentlyContinue).Version.ToString() } catch { "0.0" }
     $updated = [Version] "$current" -ge [Version] "$version"
     if (-not $updated) {
         $address = "https://downloads.sourceforge.net/project/qbittorrent/qbittorrent-win32"
