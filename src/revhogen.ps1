@@ -116,10 +116,11 @@ if ($MyInvocation.InvocationName -ne ".") {
     $maximum = (85 - 20) * -1
     $heading = "`n{0,$maximum}{1,-3}{2,-6}{3,-3}{4,-8}" -f "FUNCTION", "", "STATUS", "", "DURATION"
     $factors = (
-        "Update-System",
+        # "Update-System",
         # "Update-NvidiaGameReadyDriver",
         # "Update-NvidiaGeforceExperience",
-        "Update-Qbittorrent"
+        # "Update-Qbittorrent",
+        "Update-Playnite"
     )
     Write-Host "$heading"
     foreach ($element in $factors) {
