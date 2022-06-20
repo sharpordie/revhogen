@@ -47,7 +47,7 @@ function Update-NvidiaGeforceExperience {
 }
 
 function Update-Playnite {
-    $starter = "${env:LOCALAPPDATA}\insomnia\Insomnia.exe"
+    $starter = "${env:LOCALAPPDATA}\Playnite\Playnite.DesktopApp.exe"
     $website = "https://api.github.com/repos/JosefNemec/Playnite/releases/latest"
     $version = ((Invoke-WebRequest -Uri "$website" -UseBasicParsing | ConvertFrom-Json)[0].tag_name)
     $compact = ((Invoke-WebRequest -Uri "$website" -UseBasicParsing | ConvertFrom-Json)[0].tag_name).Replace(".", "")
@@ -60,10 +60,10 @@ function Update-Playnite {
         $adjunct = "/SP- /VERYSILENT /NORESTART"
         (New-Object Net.WebClient).DownloadFile("$address", "$program")
         Start-Process -FilePath "$program" -ArgumentList "$adjunct" -Verb RunAs -Wait
-        # $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("CommonDesktopDirectory"), "*Playnite*.lnk")
-        # if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
-        # $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "*Playnite*.lnk")
-        # if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
+        $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("CommonDesktopDirectory"), "*Playnite*.lnk")
+        if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
+        $lnkfile = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "*Playnite*.lnk")
+        if (Test-Path -Path "$lnkfile") { Remove-Item -Path "$lnkfile" }
     }
 }
 
